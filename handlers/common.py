@@ -1,5 +1,6 @@
 from aiogram import types, Dispatcher
 from aiogram.dispatcher.filters.builtin import CommandStart
+from aiogram.dispatcher.filters.builtin import CommandHelp
 
 from keyboards.default.main_menu import main_menu_keyboard
 
@@ -20,7 +21,11 @@ async def command_menu(message: types.Message):
 
 
 async def command_help(message: types.Message):
-    pass
+    instruction_url = "instruction_URL"
+    faq_url = "FAQ_URL"
+    help_message = (f"Instructions: {instruction_url}",
+                    f"FAQ: {faq_url}")
+    await message.answer("\n\n".join(help_message))
 
 
 async def command_language(message: types.Message):
@@ -37,4 +42,5 @@ async def button_support(message: types.Message):
 
 def register_handlers_common(dp: Dispatcher):
     dp.register_message_handler(command_start, CommandStart())
+    dp.register_message_handler(command_help, CommandHelp())
     dp.register_message_handler(command_menu, commands="menu")

@@ -1,6 +1,11 @@
 from aiogram import types, Dispatcher
+from aiogram.dispatcher.filters import Text
+from aiogram.dispatcher import FSMContext
+
 from aiogram.dispatcher.filters.builtin import CommandStart
 from aiogram.dispatcher.filters.builtin import CommandHelp
+
+from functionality.backend_processes import reset_state_delete_user_data
 
 from keyboards.default.main_menu import main_menu_keyboard
 
@@ -40,7 +45,17 @@ async def button_support(message: types.Message):
     pass
 
 
+async def cancel(message: types.Message, state: FSMContext):
+    current_state = await state.get_state()
+    if current_state is None:
+        await message.answer("No action has been taken yet")
+    else:
+        await reset_state_delete_user_data(message, state)
+        await message.answer("Action canceled", reply_markup=main_menu_keyboard)
+
+
 def register_handlers_common(dp: Dispatcher):
     dp.register_message_handler(command_start, CommandStart())
     dp.register_message_handler(command_help, CommandHelp())
     dp.register_message_handler(command_menu, commands="menu")
+    dp.register_message_handler(cancel, Text(equals="Cancel", ignore_case=True), state="*")

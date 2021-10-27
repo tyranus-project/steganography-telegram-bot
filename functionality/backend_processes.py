@@ -4,6 +4,8 @@ from aiogram.dispatcher import FSMContext
 import os
 import shutil
 
+from cryptosteganography import CryptoSteganography
+
 
 async def download_document_as_image(message: types.Message, raster_format: str):
     os.mkdir(f"data/{message.from_user.id}")
@@ -22,3 +24,9 @@ async def reset_state_delete_user_data(message: types.Message, state: FSMContext
     await state.reset_state()
     if os.path.isdir(f"data/{message.from_user.id}"):
         shutil.rmtree(f"data/{message.from_user.id}")
+
+
+async def encrypting_function(message_to_encrypt, image_to_encrypt, password_to_encrypt):
+    crypto_steganography = CryptoSteganography(password_to_encrypt)
+    crypto_steganography.hide(image_to_encrypt, f"{image_to_encrypt.split('_', 1)[0]}_image.png", message_to_encrypt)
+    return f"{image_to_encrypt.split('_', 1)[0]}_image.png"

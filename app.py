@@ -6,6 +6,7 @@ from functionality.notify_admins import notify_admins_at_bot_start
 
 from handlers.common import register_handlers_common
 from handlers.encryption import register_handlers_encryption
+from handlers.decryption import register_handlers_decryption
 from handlers.other import register_handlers_other
 
 
@@ -15,6 +16,7 @@ async def on_startup(dispatcher):
 
     register_handlers_common(dispatcher)
     register_handlers_encryption(dispatcher)
+    register_handlers_decryption(dispatcher)
     register_handlers_other(dispatcher)
 
 

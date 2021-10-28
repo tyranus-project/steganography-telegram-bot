@@ -30,3 +30,9 @@ async def encrypting_function(message_to_encrypt, image_to_encrypt, password_to_
     crypto_steganography = CryptoSteganography(password_to_encrypt)
     crypto_steganography.hide(image_to_encrypt, f"{image_to_encrypt.split('_', 1)[0]}_image.png", message_to_encrypt)
     return f"{image_to_encrypt.split('_', 1)[0]}_image.png"
+
+
+async def decrypting_function(image_to_decrypt, password_to_decrypt):
+    crypto_steganography = CryptoSteganography(password_to_decrypt)
+    secret_text = crypto_steganography.retrieve(image_to_decrypt)
+    return secret_text

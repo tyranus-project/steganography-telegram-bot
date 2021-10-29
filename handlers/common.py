@@ -10,7 +10,8 @@ from functionality.backend_processes import reset_state_delete_user_data
 from keyboards.default.main_menu import main_menu_keyboard
 
 
-async def command_start(message: types.Message):
+async def command_start(message: types.Message, state: FSMContext):
+    await reset_state_delete_user_data(message, state)
     channel_name = "@channel_name"
     start_welcome_message = ("Welcome!",
                              "This bot helps to hide your messages in images.",
@@ -21,7 +22,8 @@ async def command_start(message: types.Message):
     await message.answer("\n\n".join(start_useful_commands_message), reply_markup=main_menu_keyboard)
 
 
-async def command_menu(message: types.Message):
+async def command_menu(message: types.Message, state: FSMContext):
+    await reset_state_delete_user_data(message, state)
     await message.answer("Main menu", reply_markup=main_menu_keyboard)
 
 
@@ -31,18 +33,6 @@ async def command_help(message: types.Message):
     help_message = (f"Instructions: {instruction_url}",
                     f"FAQ: {faq_url}")
     await message.answer("\n\n".join(help_message))
-
-
-async def command_language(message: types.Message):
-    pass
-
-
-async def button_settings(message: types.Message):
-    pass
-
-
-async def button_support(message: types.Message):
-    pass
 
 
 async def cancel(message: types.Message, state: FSMContext):
@@ -55,7 +45,7 @@ async def cancel(message: types.Message, state: FSMContext):
 
 
 def register_handlers_common(dp: Dispatcher):
-    dp.register_message_handler(command_start, CommandStart())
-    dp.register_message_handler(command_help, CommandHelp())
-    dp.register_message_handler(command_menu, commands="menu")
+    dp.register_message_handler(command_start, CommandStart(), state="*")
+    dp.register_message_handler(command_help, CommandHelp(), state="*")
+    dp.register_message_handler(command_menu, commands="menu", state="*")
     dp.register_message_handler(cancel, Text(equals="Cancel", ignore_case=True), state="*")

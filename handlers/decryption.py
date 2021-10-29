@@ -13,9 +13,7 @@ from keyboards.default.main_menu import main_menu_keyboard
 
 
 async def decrypting_start(message: types.Message, state: FSMContext):
-    current_state = await state.get_state()
-    if current_state:
-        await reset_state_delete_user_data(message, state)
+    await reset_state_delete_user_data(message, state)
     await message.answer("Send image with encrypted message", reply_markup=decryption_keyboard)
     await message.answer("IMPORTANT!\nImage must be sent as a file")
     await Decrypting.waiting_for_image.set()

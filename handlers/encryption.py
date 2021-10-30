@@ -11,6 +11,8 @@ from functionality.backend_processes import encrypting_function
 from keyboards.default.cryption import encryption_keyboard
 from keyboards.default.main_menu import main_menu_keyboard
 
+import config
+
 
 async def encrypting_start(message: types.Message, state: FSMContext):
     await reset_state_delete_user_data(message, state)
@@ -33,6 +35,7 @@ async def original_image_entering(message: types.Message, state: FSMContext):
 
 async def encryption_password_entering_encrypting_end(message: types.Message, state: FSMContext):
     await state.update_data(password_to_encrypt=message.text)
+    await state.update_data(salt_to_encrypt=config.USE_BOT_SALT)
     user_data = await state.get_data()
     encrypted_image = await encrypting_function(**user_data)
     await message.answer_document(types.InputFile(encrypted_image), reply_markup=main_menu_keyboard)

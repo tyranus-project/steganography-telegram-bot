@@ -32,7 +32,10 @@ async def encrypting_function(message_to_encrypt, image_to_encrypt, password_to_
     return f"{image_to_encrypt.split('_', 1)[0]}_image.png"
 
 
-async def decrypting_function(image_to_decrypt, password_to_decrypt):
-    crypto_steganography = CryptoSteganography(password_to_decrypt)
+async def decrypting_function(image_to_decrypt, password_to_decrypt, salt=BOT_SALT):
+    crypto_steganography = CryptoSteganography(password_to_decrypt + salt)
     secret_text = crypto_steganography.retrieve(image_to_decrypt)
+    if secret_text is None:
+        crypto_steganography = CryptoSteganography(password_to_decrypt)
+        secret_text = crypto_steganography.retrieve(image_to_decrypt)
     return secret_text

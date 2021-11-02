@@ -4,7 +4,7 @@ from aiogram.dispatcher import FSMContext
 
 from states.crypting import Encrypting
 
-from functionality.backend_processes import download_document_as_image
+from functionality.backend_processes import save_user_file_as_image
 from functionality.backend_processes import reset_state_delete_user_data
 from functionality.backend_processes import encrypting_function
 
@@ -28,7 +28,7 @@ async def secret_message_entering(message: types.Message, state: FSMContext):
 
 async def original_image_entering(message: types.Message, state: FSMContext):
     await message.answer("Enter the password with which you encrypt your text, and you can also decrypt later")
-    original_image_as_document = await download_document_as_image(message, 'jpg')
+    original_image_as_document = await save_user_file_as_image(message, 'jpg')
     await state.update_data(image_to_encrypt=original_image_as_document)
     await Encrypting.next()
 

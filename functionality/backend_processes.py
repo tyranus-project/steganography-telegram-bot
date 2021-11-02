@@ -1,19 +1,18 @@
-from aiogram import types
-from aiogram.dispatcher import FSMContext
-
 import os
 import shutil
+
+from aiogram import types
+from aiogram.dispatcher import FSMContext
 
 from cryptosteganography import CryptoSteganography
 
 from config import BOT_SALT
 
 
-async def download_document_as_image(message: types.Message, raster_format: str):
-    os.mkdir(f"data/{message.from_user.id}")
-    document_as_image_save_path = f"data/{message.from_user.id}/{message.document.file_id}.{raster_format}"
-    await message.document.download(document_as_image_save_path, make_dirs=True)
-    return document_as_image_save_path
+async def save_user_file_as_image(message: types.Message, raster_format: str):
+    image_save_path = f"data/{message.from_user.id}/{message.document.file_id}.{raster_format}"
+    await message.document.download(destination_file=image_save_path)
+    return image_save_path
 
 
 async def reset_state_delete_user_data(message: types.Message, state: FSMContext):

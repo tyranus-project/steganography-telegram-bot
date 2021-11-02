@@ -6,8 +6,6 @@ from aiogram.dispatcher import FSMContext
 
 from cryptosteganography import CryptoSteganography
 
-from config import BOT_SALT
-
 
 async def save_user_file_as_image(message: types.Message, raster_format: str):
     image_save_path = f"data/{message.from_user.id}/{message.document.file_id}.{raster_format}"
@@ -30,10 +28,10 @@ def create_encrypted_stego_image(secret_message, image_container, encryption_key
     return encrypted_stego_container_path
 
 
-async def decrypting_function(image_to_decrypt, password_to_decrypt, salt=BOT_SALT):
-    crypto_steganography = CryptoSteganography(password_to_decrypt + salt)
-    secret_text = crypto_steganography.retrieve(image_to_decrypt)
-    if secret_text is None:
-        crypto_steganography = CryptoSteganography(password_to_decrypt)
-        secret_text = crypto_steganography.retrieve(image_to_decrypt)
-    return secret_text
+def decrypt_stego_image(stego_image, decryption_key, bot_salt):
+    crypto_steganography = CryptoSteganography(decryption_key + bot_salt)
+    secret_message = crypto_steganography.retrieve(stego_image)
+    if secret_message is None:
+        crypto_steganography = CryptoSteganography(decryption_key)
+        secret_message = crypto_steganography.retrieve(stego_image)
+    return secret_message

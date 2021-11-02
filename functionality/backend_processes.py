@@ -15,7 +15,7 @@ async def save_user_file_as_image(message: types.Message, raster_format: str):
     return image_save_path
 
 
-async def reset_state_delete_user_data(message: types.Message, state: FSMContext):
+async def reset_user_data(message: types.Message, state: FSMContext):
     current_state = await state.get_state()
     if current_state is not None:
         await state.reset_state()

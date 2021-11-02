@@ -5,7 +5,7 @@ from aiogram.dispatcher import FSMContext
 from states.crypting import Decrypting
 
 from functionality.backend_processes import save_user_file_as_image
-from functionality.backend_processes import reset_state_delete_user_data
+from functionality.backend_processes import reset_user_data
 from functionality.backend_processes import decrypting_function
 
 from keyboards.default.cryption import decryption_keyboard
@@ -13,7 +13,7 @@ from keyboards.default.main_menu import main_menu_keyboard
 
 
 async def decrypting_start(message: types.Message, state: FSMContext):
-    await reset_state_delete_user_data(message, state)
+    await reset_user_data(message, state)
     await message.answer("Send image with encrypted message", reply_markup=decryption_keyboard)
     await message.answer("IMPORTANT!\nImage must be sent as a file")
     await Decrypting.waiting_for_image.set()
@@ -35,7 +35,7 @@ async def decryption_password_entering_decrypting_end(message: types.Message, st
     else:
         await message.answer(f"Nothing is encrypted in the picture, or your password is incorrect",
                              reply_markup=main_menu_keyboard)
-    await reset_state_delete_user_data(message, state)
+    await reset_user_data(message, state)
 
 
 def register_handlers_decryption(dp: Dispatcher):

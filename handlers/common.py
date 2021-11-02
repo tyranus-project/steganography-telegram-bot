@@ -1,17 +1,15 @@
 from aiogram import types, Dispatcher
-from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher import FSMContext
-
-from aiogram.dispatcher.filters.builtin import CommandStart
+from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher.filters.builtin import CommandHelp
+from aiogram.dispatcher.filters.builtin import CommandStart
 
-from functionality.backend_processes import reset_state_delete_user_data
-
+from functionality.backend_processes import reset_user_data
 from keyboards.default.main_menu import main_menu_keyboard
 
 
 async def command_start(message: types.Message, state: FSMContext):
-    await reset_state_delete_user_data(message, state)
+    await reset_user_data(message, state)
     channel_name = "@channel_name"
     start_welcome_message = ("Welcome!",
                              "This bot helps to hide your messages in images.",
@@ -23,7 +21,7 @@ async def command_start(message: types.Message, state: FSMContext):
 
 
 async def command_menu(message: types.Message, state: FSMContext):
-    await reset_state_delete_user_data(message, state)
+    await reset_user_data(message, state)
     await message.answer("Main menu", reply_markup=main_menu_keyboard)
 
 
@@ -40,7 +38,7 @@ async def cancel(message: types.Message, state: FSMContext):
     if current_state is None:
         await message.answer("No action has been taken yet")
     else:
-        await reset_state_delete_user_data(message, state)
+        await reset_user_data(message, state)
         await message.answer("Action canceled", reply_markup=main_menu_keyboard)
 
 

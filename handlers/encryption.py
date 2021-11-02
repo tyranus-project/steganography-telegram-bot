@@ -5,7 +5,7 @@ from aiogram.dispatcher import FSMContext
 from states.crypting import Encrypting
 
 from functionality.backend_processes import save_user_file_as_image
-from functionality.backend_processes import reset_state_delete_user_data
+from functionality.backend_processes import reset_user_data
 from functionality.backend_processes import encrypting_function
 
 from keyboards.default.cryption import encryption_keyboard
@@ -15,7 +15,7 @@ import config
 
 
 async def encrypting_start(message: types.Message, state: FSMContext):
-    await reset_state_delete_user_data(message, state)
+    await reset_user_data(message, state)
     await message.answer("Enter the text you want to encrypt", reply_markup=encryption_keyboard)
     await Encrypting.waiting_for_message.set()
 
@@ -40,7 +40,7 @@ async def encryption_password_entering_encrypting_end(message: types.Message, st
     encrypted_image = await encrypting_function(**user_data)
     await message.answer_document(types.InputFile(encrypted_image), reply_markup=main_menu_keyboard)
     await message.answer(f"Your text is encrypted in the file (image) above")
-    await reset_state_delete_user_data(message, state)
+    await reset_user_data(message, state)
 
 
 def register_handlers_encryption(dp: Dispatcher):

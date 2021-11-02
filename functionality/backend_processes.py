@@ -23,12 +23,11 @@ async def reset_user_data(message: types.Message, state: FSMContext):
         shutil.rmtree(f"data/{message.from_user.id}")
 
 
-async def encrypting_function(message_to_encrypt, image_to_encrypt, password_to_encrypt, salt_to_encrypt, salt=BOT_SALT):
-    if salt_to_encrypt:
-        password_to_encrypt = password_to_encrypt + salt
-    crypto_steganography = CryptoSteganography(password_to_encrypt)
-    crypto_steganography.hide(image_to_encrypt, f"{image_to_encrypt.split('_', 1)[0]}_image.png", message_to_encrypt)
-    return f"{image_to_encrypt.split('_', 1)[0]}_image.png"
+def create_encrypted_stego_image(secret_message, image_container, encryption_key):
+    crypto_steganography = CryptoSteganography(encryption_key)
+    encrypted_stego_container_path = f"{image_container.split('_', 1)[0]}_image.png"
+    crypto_steganography.hide(image_container, encrypted_stego_container_path, secret_message)
+    return encrypted_stego_container_path
 
 
 async def decrypting_function(image_to_decrypt, password_to_decrypt, salt=BOT_SALT):

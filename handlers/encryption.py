@@ -6,7 +6,7 @@ from states.crypting import Encrypting
 
 from functionality.backend_processes import save_user_file_as_image
 from functionality.backend_processes import reset_user_data
-from functionality.backend_processes import encrypting_function
+from functionality.backend_processes import create_encrypted_stego_image
 
 from keyboards.default.cryption import encryption_keyboard
 from keyboards.default.main_menu import main_menu_keyboard
@@ -21,7 +21,7 @@ async def encrypting_start(message: types.Message, state: FSMContext):
 
 
 async def secret_message_entering(message: types.Message, state: FSMContext):
-    await state.update_data(message_to_encrypt=message.text)
+    await state.update_data(secret_message=message.text)
     await message.answer("Send an image in which the text will be encrypted")
     await Encrypting.next()
 
@@ -29,16 +29,18 @@ async def secret_message_entering(message: types.Message, state: FSMContext):
 async def original_image_entering(message: types.Message, state: FSMContext):
     await message.answer("Enter the password with which you encrypt your text, and you can also decrypt later")
     original_image_as_document = await save_user_file_as_image(message, 'jpg')
-    await state.update_data(image_to_encrypt=original_image_as_document)
+    await state.update_data(image_container=original_image_as_document)
     await Encrypting.next()
 
 
 async def encryption_password_entering_encrypting_end(message: types.Message, state: FSMContext):
-    await state.update_data(password_to_encrypt=message.text)
-    await state.update_data(salt_to_encrypt=config.USE_BOT_SALT)
+    if config.USE_BOT_SALT:
+        await state.update_data(encryption_key=message.text + config.BOT_SALT)
+    else:
+        await state.update_data(encryption_key=message.text)
     user_data = await state.get_data()
-    encrypted_image = await encrypting_function(**user_data)
-    await message.answer_document(types.InputFile(encrypted_image), reply_markup=main_menu_keyboard)
+    encrypted_stego_container = create_encrypted_stego_image(**user_data)
+    await message.answer_document(types.InputFile(encrypted_stego_container), reply_markup=main_menu_keyboard)
     await message.answer(f"Your text is encrypted in the file (image) above")
     await reset_user_data(message, state)
 

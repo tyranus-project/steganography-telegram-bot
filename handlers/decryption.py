@@ -8,8 +8,7 @@ from functionality.backend_processes import decrypt_stego_image
 from functionality.backend_processes import reset_user_data
 from functionality.backend_processes import save_user_file_as_image
 
-from keyboards.default.cryption import decryption_keyboard
-from keyboards.default.main_menu import main_menu_keyboard
+from keyboards.default import main_menu_keyboard, decryption_keyboard
 
 from states.crypting import Decrypt
 

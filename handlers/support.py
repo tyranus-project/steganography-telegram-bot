@@ -1,8 +1,8 @@
 from aiogram import types, Dispatcher
 from aiogram.dispatcher.filters import Text
 
-from keyboards.inline.support import support_keyboard
-from keyboards.inline.support import donate_keyboard
+from keyboards.inline import support_keyboard
+from keyboards.inline import donate_keyboard
 
 
 async def support_menu(message: types.Message):

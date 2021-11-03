@@ -6,7 +6,7 @@ from aiogram.dispatcher.filters.builtin import CommandStart
 
 from functionality.backend_processes import reset_user_data
 
-from keyboards.default.main_menu import main_menu_keyboard
+from keyboards.default import main_menu_keyboard
 
 from states.crypting import crypt_states
 

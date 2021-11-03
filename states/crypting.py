@@ -10,3 +10,6 @@ class Encrypt(StatesGroup):
 class Decrypt(StatesGroup):
     waiting_for_stego_image = State()
     waiting_for_decryption_key = State()
+
+
+crypt_states = Encrypt.states_names + Decrypt.states_names

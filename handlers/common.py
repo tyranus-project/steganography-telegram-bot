@@ -8,6 +8,8 @@ from functionality.backend_processes import reset_user_data
 
 from keyboards.default.main_menu import main_menu_keyboard
 
+from states.crypting import crypt_states
+
 
 async def cmd_start(message: types.Message, state: FSMContext):
     await reset_user_data(message, state)
@@ -39,16 +41,15 @@ async def cmd_help(message: types.Message):
 
 
 async def cancel(message: types.Message, state: FSMContext):
-    current_state = await state.get_state()
-    if current_state is None:
-        await message.answer("No action has been taken yet")
-    else:
-        await reset_user_data(message, state)
-        await message.answer("Action canceled", reply_markup=main_menu_keyboard)
+    await reset_user_data(message, state)
+    await message.answer(
+        "Action canceled",
+        reply_markup=main_menu_keyboard
+    )
 
 
 def register_handlers_common(dp: Dispatcher):
     dp.register_message_handler(cmd_start, CommandStart(), state="*")
     dp.register_message_handler(cmd_help, CommandHelp(), state="*")
-    dp.register_message_handler(cmd_menu, commands="menu", state="*")
-    dp.register_message_handler(cancel, Text(equals="cancel", ignore_case=True), state="*")
+    dp.register_message_handler(cmd_menu, commands=["menu"], state="*")
+    dp.register_message_handler(cancel, Text(equals="cancel", ignore_case=True), state=crypt_states)

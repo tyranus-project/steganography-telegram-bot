@@ -17,7 +17,7 @@ support_keyboard = InlineKeyboardMarkup(
         [InlineKeyboardButton(text="FAQ", url="https://telegram.org/faq")],
         [InlineKeyboardButton(text="Instructions", url="https://telegram.org/faq")],
         [InlineKeyboardButton(text="Author's channel", url="https://telegram.org/faq")],
-        [InlineKeyboardButton(text="Support the author", callback_data="support the author")],
+        [InlineKeyboardButton(text="Support the author", callback_data="donate")],
         [InlineKeyboardButton(text="Hide", callback_data="hide")]
     ]
 )

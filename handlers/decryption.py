@@ -16,20 +16,23 @@ from states.crypting import Decrypt
 async def start_decrypt(message: types.Message, state: FSMContext):
     await reset_user_data(message, state)
     await message.answer(
-        "Send the image with a hidden and encrypted message in it",
+        "Send an image with a hidden and encrypted message in it",
         reply_markup=decryption_keyboard
     )
     await message.answer(
         "IMPORTANT!\n"
-        "Image must be sent as a file"
+        "The image must be sent as a file"
     )
     await Decrypt.waiting_for_stego_image.set()
 
 
 async def enter_stego_image(message: types.Message, state: FSMContext):
+    if message.content_type == "photo":
+        await message.answer("The image must be sent as a file. Try again!")
+        return
     await message.answer("Enter the password to find out the message hidden in the sent image")
-    user_document_as_image = await save_user_file_as_image(message, 'png')
-    await state.update_data(stego_image=user_document_as_image)
+    user_file_as_image = await save_user_file_as_image(message, "png")
+    await state.update_data(stego_image=user_file_as_image)
     await Decrypt.next()
 
 
@@ -54,5 +57,5 @@ async def enter_decryption_key(message: types.Message, state: FSMContext):
 def register_handlers_decryption(dp: Dispatcher):
     dp.register_message_handler(start_decrypt, Text(equals="Decrypt", ignore_case=True))
     dp.register_message_handler(start_decrypt, Text(equals="Start decryption again"), state="*")
-    dp.register_message_handler(enter_stego_image, content_types=['document'], state=Decrypt.waiting_for_stego_image)
+    dp.register_message_handler(enter_stego_image, content_types=["document", "photo"], state=Decrypt.waiting_for_stego_image)
     dp.register_message_handler(enter_decryption_key, state=Decrypt.waiting_for_decryption_key)

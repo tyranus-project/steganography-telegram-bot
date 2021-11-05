@@ -20,4 +20,5 @@ async def change_bot_salt_status(callback: types.CallbackQuery):
 
 def register_callback_query_handlers_settings(dp: Dispatcher):
     dp.register_message_handler(settings_menu, Text(equals="Settings", ignore_case=True), state="*")
+    dp.register_message_handler(settings_menu, commands=["settings"], state="*")
     dp.register_callback_query_handler(change_bot_salt_status, Text(equals="change"), state="*")

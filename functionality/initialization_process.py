@@ -10,7 +10,7 @@ async def set_default_commands(dp: Dispatcher):
         [
             types.BotCommand("/menu", "Main menu"),
             types.BotCommand("/help", "User manual"),
-            types.BotCommand("/language", "Change language")
+            types.BotCommand("/settings", "Settings"),
         ]
     )
 

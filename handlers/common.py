@@ -8,7 +8,7 @@ from functionality.backend_processes import reset_user_data
 
 from keyboards.default import main_menu_keyboard
 
-from states.crypting import crypt_states
+from functionality.states import crypt_states
 
 
 async def cmd_start(message: types.Message, state: FSMContext):

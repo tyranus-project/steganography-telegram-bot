@@ -10,7 +10,7 @@ from functionality.backend_processes import save_user_file_as_image
 
 from keyboards.default import main_menu_keyboard, decryption_keyboard
 
-from states.crypting import Decrypt
+from functionality.states import Decrypt
 
 
 async def start_decrypt(message: types.Message, state: FSMContext):

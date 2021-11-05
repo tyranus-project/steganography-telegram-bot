@@ -3,10 +3,10 @@ from aiogram.types.message import ContentType
 
 
 async def undefined_request(message: types.Message):
-    channel_name = "@channel_name"
-    undefined_message = ("For Bot requests use...",
-                         f"{channel_name}")
-    await message.answer("\n\n".join(undefined_message))
+    await message.answer(
+        "Use the menu buttons and commands, and follow the instructions in the messages\n\n"
+        "/help to show user manual"
+    )
 
 
 def register_handlers_other(dp: Dispatcher):

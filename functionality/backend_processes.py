@@ -1,22 +1,22 @@
-from aiogram import types
-from aiogram.dispatcher import FSMContext
-
 import os
 import shutil
 
+from aiogram import types
+from aiogram.dispatcher import FSMContext
+
 from cryptosteganography import CryptoSteganography
 
-from config import BOT_SALT
+
+async def save_user_file_as_image(message: types.Message, raster_format: str):
+    image_save_path = f"data/{message.from_user.id}/{message.message_id}.{raster_format}"
+    if message.content_type == "document":
+        await message.document.download(destination_file=image_save_path)
+    else:
+        await message.photo[-1].download(destination_file=image_save_path)
+    return image_save_path
 
 
-async def download_document_as_image(message: types.Message, raster_format: str):
-    os.mkdir(f"data/{message.from_user.id}")
-    document_as_image_save_path = f"data/{message.from_user.id}/{message.document.file_id}.{raster_format}"
-    await message.document.download(document_as_image_save_path, make_dirs=True)
-    return document_as_image_save_path
-
-
-async def reset_state_delete_user_data(message: types.Message, state: FSMContext):
+async def reset_user_data(message: types.Message, state: FSMContext):
     current_state = await state.get_state()
     if current_state is not None:
         await state.reset_state()
@@ -24,18 +24,17 @@ async def reset_state_delete_user_data(message: types.Message, state: FSMContext
         shutil.rmtree(f"data/{message.from_user.id}")
 
 
-async def encrypting_function(message_to_encrypt, image_to_encrypt, password_to_encrypt, salt_to_encrypt, salt=BOT_SALT):
-    if salt_to_encrypt:
-        password_to_encrypt = password_to_encrypt + salt
-    crypto_steganography = CryptoSteganography(password_to_encrypt)
-    crypto_steganography.hide(image_to_encrypt, f"{image_to_encrypt.split('_', 1)[0]}_image.png", message_to_encrypt)
-    return f"{image_to_encrypt.split('_', 1)[0]}_image.png"
+def create_encrypted_stego_image(secret_message, image_container, encryption_key):
+    crypto_steganography = CryptoSteganography(encryption_key)
+    encrypted_stego_container_path = f"{image_container.split('.')[0]}.png"
+    crypto_steganography.hide(image_container, encrypted_stego_container_path, secret_message)
+    return encrypted_stego_container_path
 
 
-async def decrypting_function(image_to_decrypt, password_to_decrypt, salt=BOT_SALT):
-    crypto_steganography = CryptoSteganography(password_to_decrypt + salt)
-    secret_text = crypto_steganography.retrieve(image_to_decrypt)
-    if secret_text is None:
-        crypto_steganography = CryptoSteganography(password_to_decrypt)
-        secret_text = crypto_steganography.retrieve(image_to_decrypt)
-    return secret_text
+def decrypt_stego_image(stego_image, decryption_key, bot_salt):
+    crypto_steganography = CryptoSteganography(decryption_key + bot_salt)
+    secret_message = crypto_steganography.retrieve(stego_image)
+    if secret_message is None:
+        crypto_steganography = CryptoSteganography(decryption_key)
+        secret_message = crypto_steganography.retrieve(stego_image)
+    return secret_message

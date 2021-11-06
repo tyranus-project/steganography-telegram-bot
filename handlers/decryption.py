@@ -4,13 +4,13 @@ from aiogram.dispatcher.filters import Text
 
 import config
 
-from functionality.backend_processes import decrypt_stego_image
-from functionality.backend_processes import reset_user_data
-from functionality.backend_processes import save_user_file_as_image
+from utils.backend_processes import decrypt_stego_image
+from utils.backend_processes import reset_user_data
+from utils.backend_processes import save_user_file_as_image
 
 from keyboards.default import main_menu_keyboard, decryption_keyboard
 
-from functionality.states import Decrypt
+from utils.states import Decrypt
 
 
 async def start_decrypt(message: types.Message, state: FSMContext):

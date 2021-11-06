@@ -4,13 +4,13 @@ from aiogram.dispatcher.filters import Text
 
 import config
 
-from functionality.backend_processes import create_encrypted_stego_image
-from functionality.backend_processes import reset_user_data
-from functionality.backend_processes import save_user_file_as_image
+from utils.backend_processes import create_encrypted_stego_image
+from utils.backend_processes import reset_user_data
+from utils.backend_processes import save_user_file_as_image
 
 from keyboards.default import main_menu_keyboard, encryption_keyboard
 
-from functionality.states import Encrypt
+from utils.states import Encrypt
 
 
 async def start_encrypt(message: types.Message, state: FSMContext):

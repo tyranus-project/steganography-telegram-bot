@@ -1,8 +1,7 @@
 from aiogram import executor
 from loader import dp
 
-from utils.initialization_process import set_default_commands
-from utils.initialization_process import notify_admins_at_bot_start
+from utils.set_bot_commands import set_default_commands
 
 from handlers.common import register_handlers_common
 from handlers.encryption import register_handlers_encryption
@@ -14,7 +13,6 @@ from handlers.other import register_handlers_other
 
 async def on_startup(dispatcher):
     await set_default_commands(dispatcher)
-    await notify_admins_at_bot_start(dispatcher)
 
     register_handlers_common(dispatcher)
     register_handlers_encryption(dispatcher)

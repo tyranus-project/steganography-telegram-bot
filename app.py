@@ -10,6 +10,7 @@ from handlers.other import register_handlers_other
 from handlers.settings import register_callback_query_handlers_settings
 from handlers.support import register_callback_query_handlers_support
 
+from utils.middlewares import set_middlewares
 from utils.set_bot_commands import set_default_commands
 
 
@@ -21,6 +22,7 @@ async def setup(dp: Dispatcher):
     register_callback_query_handlers_settings(dp)
     register_callback_query_handlers_support(dp)
     register_handlers_other(dp)
+    set_middlewares(dp)
 
 
 steganography_bot = Bot(token=BOT_TOKEN, parse_mode=types.ParseMode.HTML)

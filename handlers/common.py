@@ -4,11 +4,11 @@ from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher.filters.builtin import CommandHelp
 from aiogram.dispatcher.filters.builtin import CommandStart
 
-from functionality.backend_processes import reset_user_data
+from utils.backend_processes import reset_user_data
 
 from keyboards.default import main_menu_keyboard
 
-from functionality.states import crypt_states
+from utils.states import crypt_states
 
 
 async def cmd_start(message: types.Message, state: FSMContext):

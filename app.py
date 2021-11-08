@@ -1,28 +1,34 @@
-from aiogram import executor
-from loader import dp
+from aiogram import Bot, Dispatcher, executor, types
+from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
-from functionality.initialization_process import set_default_commands
-from functionality.initialization_process import notify_admins_at_bot_start
+from config import BOT_TOKEN
 
 from handlers.common import register_handlers_common
-from handlers.encryption import register_handlers_encryption
 from handlers.decryption import register_handlers_decryption
+from handlers.encryption import register_handlers_encryption
+from handlers.other import register_handlers_other
 from handlers.settings import register_callback_query_handlers_settings
 from handlers.support import register_callback_query_handlers_support
-from handlers.other import register_handlers_other
+
+from utils.middlewares import set_middlewares
+from utils.set_bot_commands import set_default_commands
 
 
-async def on_startup(dispatcher):
-    await set_default_commands(dispatcher)
-    await notify_admins_at_bot_start(dispatcher)
+async def setup(dp: Dispatcher):
+    await set_default_commands(dp)
+    register_handlers_common(dp)
+    register_handlers_encryption(dp)
+    register_handlers_decryption(dp)
+    register_callback_query_handlers_settings(dp)
+    register_callback_query_handlers_support(dp)
+    register_handlers_other(dp)
+    set_middlewares(dp)
 
-    register_handlers_common(dispatcher)
-    register_handlers_encryption(dispatcher)
-    register_handlers_decryption(dispatcher)
-    register_callback_query_handlers_settings(dispatcher)
-    register_callback_query_handlers_support(dispatcher)
-    register_handlers_other(dispatcher)
+
+steganography_bot = Bot(token=BOT_TOKEN, parse_mode=types.ParseMode.HTML)
+storage = MemoryStorage()
+steganography_dispatcher = Dispatcher(steganography_bot, storage=storage)
 
 
 if __name__ == '__main__':
-    executor.start_polling(dp, on_startup=on_startup)
+    executor.start_polling(steganography_dispatcher, on_startup=setup)

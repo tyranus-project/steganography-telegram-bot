@@ -23,6 +23,8 @@ async def start_encrypt(message: types.Message, state: FSMContext):
 
 
 async def enter_secret_message(message: types.Message, state: FSMContext):
+    if len(message.text) == 4096:
+        await message.reply("Please note that this message will be encrypted")
     await state.update_data(secret_message=message.text)
     await message.answer("Send the image in which the secret text will be hidden and encrypted")
     await Encrypt.next()
@@ -36,6 +38,8 @@ async def enter_image_container(message: types.Message, state: FSMContext):
 
 
 async def enter_encryption_key(message: types.Message, state: FSMContext):
+    if len(message.text) == 4096:
+        await message.reply("Please note that this message will be used as your password")
     if config.USE_BOT_SALT:
         await state.update_data(encryption_key=message.text + config.BOT_SALT)
     else:

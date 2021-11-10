@@ -3,17 +3,22 @@ import shutil
 
 from aiogram import types
 from aiogram.dispatcher import FSMContext
+from aiogram.utils.exceptions import FileIsTooBig
 
 from cryptosteganography import CryptoSteganography
 
 
 async def save_user_file_as_image(message: types.Message, raster_format: str):
-    image_save_path = f"data/{message.from_user.id}/{message.message_id}.{raster_format}"
-    if message.content_type == "document":
-        await message.document.download(destination_file=image_save_path)
+    try:
+        image_save_path = f"data/{message.from_user.id}/{message.message_id}.{raster_format}"
+        if message.content_type == "document":
+            await message.document.download(destination_file=image_save_path)
+        else:
+            await message.photo[-1].download(destination_file=image_save_path)
+    except FileIsTooBig:
+        raise
     else:
-        await message.photo[-1].download(destination_file=image_save_path)
-    return image_save_path
+        return image_save_path
 
 
 async def reset_user_data(message: types.Message, state: FSMContext):

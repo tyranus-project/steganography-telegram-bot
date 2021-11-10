@@ -1,6 +1,7 @@
 from aiogram import types, Dispatcher
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
+from aiogram.utils.exceptions import FileIsTooBig
 
 import config
 
@@ -31,10 +32,17 @@ async def enter_secret_message(message: types.Message, state: FSMContext):
 
 
 async def enter_image_container(message: types.Message, state: FSMContext):
-    await message.answer("Enter the password to encrypt your secret text now and decrypt later")
-    user_image = await save_user_file_as_image(message, "jpg")
-    await state.update_data(image_container=user_image)
-    await Encrypt.next()
+    if message.content_type == "document" and message.document.mime_type.split('/')[0] != "image":
+        await message.answer("The file you sent is not an image. Try again!")
+        return
+    try:
+        user_image = await save_user_file_as_image(message, "jpg")
+    except FileIsTooBig:
+        await message.reply("This image is too big, please try another one!")
+    else:
+        await message.answer("Enter the password to encrypt your secret text now and decrypt later")
+        await state.update_data(image_container=user_image)
+        await Encrypt.next()
 
 
 async def enter_encryption_key(message: types.Message, state: FSMContext):

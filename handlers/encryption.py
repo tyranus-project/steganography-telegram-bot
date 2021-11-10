@@ -53,13 +53,21 @@ async def enter_encryption_key(message: types.Message, state: FSMContext):
     else:
         await state.update_data(encryption_key=message.text)
     user_data = await state.get_data()
-    encrypted_stego_container = create_encrypted_stego_image(**user_data)
-    await message.answer_document(types.InputFile(encrypted_stego_container))
-    await message.answer(
-        "Your text is hidden and encrypted in the file above",
-        reply_markup=main_menu_keyboard
-    )
-    await reset_user_data(message, state)
+    try:
+        encrypted_stego_container = create_encrypted_stego_image(**user_data)
+    except Exception:
+        await message.answer(
+            "Something went wrong. Start again!",
+            reply_markup=main_menu_keyboard
+        )
+    else:
+        await message.answer_document(types.InputFile(encrypted_stego_container))
+        await message.answer(
+            "Your text is hidden and encrypted in the file above",
+            reply_markup=main_menu_keyboard
+        )
+    finally:
+        await reset_user_data(message, state)
 
 
 def register_handlers_encryption(dp: Dispatcher):

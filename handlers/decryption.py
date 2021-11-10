@@ -48,19 +48,27 @@ async def enter_stego_image(message: types.Message, state: FSMContext):
 async def enter_decryption_key(message: types.Message, state: FSMContext):
     await state.update_data(decryption_key=message.text)
     user_data = await state.get_data()
-    decrypted_message_text = decrypt_stego_image(**user_data, bot_salt=config.BOT_SALT)
-    if decrypted_message_text:
+    try:
+        decrypted_message_text = decrypt_stego_image(**user_data, bot_salt=config.BOT_SALT)
+    except Exception:
         await message.answer(
-            "The message that the image contained:\n"
-            f"{decrypted_message_text}",
+            "Something went wrong. Start again!",
             reply_markup=main_menu_keyboard
         )
     else:
-        await message.answer(
-            "Nothing is encrypted in the image, or your password is incorrect",
-            reply_markup=main_menu_keyboard
-        )
-    await reset_user_data(message, state)
+        if decrypted_message_text:
+            await message.answer(
+                "The message that the image contained:\n"
+                f"{decrypted_message_text}",
+                reply_markup=main_menu_keyboard
+            )
+        else:
+            await message.answer(
+                "Nothing is encrypted in the image, or your password is incorrect",
+                reply_markup=main_menu_keyboard
+            )
+    finally:
+        await reset_user_data(message, state)
 
 
 def register_handlers_decryption(dp: Dispatcher):

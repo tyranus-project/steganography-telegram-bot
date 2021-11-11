@@ -28,18 +28,22 @@ async def enter_stego_image(message: types.Message, state: FSMContext):
     if message.content_type == "photo":
         await message.answer("The image must be sent as a file. Try again!")
         return
-    try:
-        user_file_as_image = await save_user_file_as_image(message, "png")
-    except FileIsTooBig:
-        await message.reply(
-            "Your image is too big!\n"
-            "It is unlikely that there was something hidden in it with the help of this bot...\n"
-            "You can try again!"
-        )
+    elif message.document.mime_type.split('/')[0] != "image":
+        await message.answer("The file you sent is not an image. Try again!")
+        return
     else:
-        await message.answer("Enter the password to find out the message hidden in the sent image")
-        await state.update_data(stego_image=user_file_as_image)
-        await Decrypt.next()
+        try:
+            user_file_as_image = await save_user_file_as_image(message, "png")
+        except FileIsTooBig:
+            await message.reply(
+                "Your image is too big!\n"
+                "It is unlikely that there was something hidden in it with the help of this bot...\n"
+                "You can try again!"
+            )
+        else:
+            await message.answer("Enter the password to find out the message hidden in the sent image")
+            await state.update_data(stego_image=user_file_as_image)
+            await Decrypt.next()
 
 
 async def enter_decryption_key(message: types.Message, state: FSMContext):

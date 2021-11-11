@@ -3,15 +3,12 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
 from aiogram.utils.exceptions import FileIsTooBig
 
-import config
-
-from utils.backend_processes import decrypt_stego_image
-from utils.backend_processes import reset_user_data
-from utils.backend_processes import save_user_file_as_image
-
-from keyboards.default import main_menu_keyboard, decryption_keyboard
-
-from utils.states import Decrypt
+from app import config
+from app.keyboards.default import main_menu_keyboard, decryption_keyboard
+from app.utils.misc import decrypt_stego_image
+from app.utils.misc import reset_user_data
+from app.utils.misc import save_user_file_as_image
+from app.utils.states import Decrypt
 
 
 async def start_decrypt(message: types.Message, state: FSMContext):

@@ -1,9 +1,8 @@
 from aiogram import types, Dispatcher
 from aiogram.dispatcher.filters import Text
 
-import config
-
-from keyboards.inline import call_settings_keyboard
+from app import config
+from app.keyboards.inline import call_settings_keyboard
 
 
 async def settings_menu(message: types.Message):

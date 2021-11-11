@@ -3,15 +3,12 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
 from aiogram.utils.exceptions import FileIsTooBig
 
-import config
-
-from utils.backend_processes import create_encrypted_stego_image
-from utils.backend_processes import reset_user_data
-from utils.backend_processes import save_user_file_as_image
-
-from keyboards.default import main_menu_keyboard, encryption_keyboard
-
-from utils.states import Encrypt
+from app import config
+from app.keyboards.default import main_menu_keyboard, encryption_keyboard
+from app.utils.misc import create_encrypted_stego_image
+from app.utils.misc import reset_user_data
+from app.utils.misc import save_user_file_as_image
+from app.utils.states import Encrypt
 
 
 async def start_encrypt(message: types.Message, state: FSMContext):

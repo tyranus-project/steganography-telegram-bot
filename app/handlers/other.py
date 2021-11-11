@@ -5,7 +5,8 @@ from aiogram.types.message import ContentType
 async def undefined_request(message: types.Message):
     await message.answer(
         "Use the menu buttons and commands, and follow the instructions in the messages\n\n"
-        "/help to show user manual"
+        "/help to show user manual\n"
+        "/start to restart the bot"
     )
 
 

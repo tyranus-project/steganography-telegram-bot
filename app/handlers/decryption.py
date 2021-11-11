@@ -58,8 +58,8 @@ async def enter_decryption_key(message: types.Message, state: FSMContext):
         )
     else:
         if decrypted_message_text:
+            await message.answer("The secret message that contained the image is posted below")
             await message.answer(
-                "The message that the image contained:\n"
                 f"{decrypted_message_text}",
                 reply_markup=main_menu_keyboard
             )

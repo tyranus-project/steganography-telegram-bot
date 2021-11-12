@@ -22,7 +22,7 @@ donate_keyboard = InlineKeyboardMarkup(
 )
 
 
-def call_settings_keyboard(bot_salt_status):
+def call_settings_keyboard(bot_salt_status: bool):
     ability = "No" if bot_salt_status else "Yes"
     settings_keyboard = InlineKeyboardMarkup(
         inline_keyboard=[

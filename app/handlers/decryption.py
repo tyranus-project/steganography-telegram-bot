@@ -1,4 +1,4 @@
-from aiogram import types, Dispatcher
+from aiogram import Dispatcher, types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
 from aiogram.utils.exceptions import FileIsTooBig
@@ -7,7 +7,7 @@ from app import config
 from app.keyboards.default import main_menu_keyboard, decryption_keyboard
 from app.utils.misc import decrypt_stego_image
 from app.utils.misc import reset_user_data
-from app.utils.misc import save_user_file_as_image
+from app.utils.misc import save_user_image
 from app.utils.states import Decrypt
 
 
@@ -33,7 +33,7 @@ async def enter_stego_image(message: types.Message, state: FSMContext):
         return
     else:
         try:
-            user_file_as_image = await save_user_file_as_image(message, "png")
+            user_file_as_image = await save_user_image(message, "png")
         except FileIsTooBig:
             await message.reply(
                 "Your image is too big!\n"
@@ -72,7 +72,7 @@ async def enter_decryption_key(message: types.Message, state: FSMContext):
         await reset_user_data(message, state)
 
 
-def register_handlers_decryption(dp: Dispatcher):
+def register_decryption_handlers(dp: Dispatcher):
     dp.register_message_handler(start_decrypt, Text(equals="Decrypt", ignore_case=True))
     dp.register_message_handler(start_decrypt, Text(equals="Start decryption again"), state="*")
     dp.register_message_handler(enter_stego_image, content_types=["document", "photo"], state=Decrypt.waiting_for_stego_image)

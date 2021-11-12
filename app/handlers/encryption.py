@@ -1,4 +1,4 @@
-from aiogram import types, Dispatcher
+from aiogram import Dispatcher, types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
 from aiogram.utils.exceptions import FileIsTooBig
@@ -7,7 +7,7 @@ from app import config
 from app.keyboards.default import main_menu_keyboard, encryption_keyboard
 from app.utils.misc import create_encrypted_stego_image
 from app.utils.misc import reset_user_data
-from app.utils.misc import save_user_file_as_image
+from app.utils.misc import save_user_image
 from app.utils.states import Encrypt
 
 
@@ -33,7 +33,7 @@ async def enter_image_container(message: types.Message, state: FSMContext):
         await message.answer("The file you sent is not an image. Try again!")
         return
     try:
-        user_image = await save_user_file_as_image(message, "jpg")
+        user_image = await save_user_image(message, "jpg")
     except FileIsTooBig:
         await message.reply("This image is too big, please try another one!")
     else:
@@ -67,7 +67,7 @@ async def enter_encryption_key(message: types.Message, state: FSMContext):
         await reset_user_data(message, state)
 
 
-def register_handlers_encryption(dp: Dispatcher):
+def register_encryption_handlers(dp: Dispatcher):
     dp.register_message_handler(start_encrypt, Text(equals="Encrypt", ignore_case=True))
     dp.register_message_handler(start_encrypt, Text(equals="Start encryption again"), state="*")
     dp.register_message_handler(enter_secret_message, state=Encrypt.waiting_for_secret_message)

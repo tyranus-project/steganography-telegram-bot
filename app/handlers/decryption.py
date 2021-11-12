@@ -74,6 +74,6 @@ async def enter_decryption_key(message: types.Message, state: FSMContext):
 
 def register_decryption_handlers(dp: Dispatcher):
     dp.register_message_handler(start_decrypt, Text(equals="Decrypt", ignore_case=True))
-    dp.register_message_handler(start_decrypt, Text(equals="Start decryption again"), state="*")
+    dp.register_message_handler(start_decrypt, Text(equals="Start decryption again"), state=Decrypt.states_names)
     dp.register_message_handler(enter_stego_image, content_types=["document", "photo"], state=Decrypt.waiting_for_stego_image)
     dp.register_message_handler(enter_decryption_key, state=Decrypt.waiting_for_decryption_key)

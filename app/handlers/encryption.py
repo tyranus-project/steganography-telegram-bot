@@ -69,7 +69,7 @@ async def enter_encryption_key(message: types.Message, state: FSMContext):
 
 def register_encryption_handlers(dp: Dispatcher):
     dp.register_message_handler(start_encrypt, Text(equals="Encrypt", ignore_case=True))
-    dp.register_message_handler(start_encrypt, Text(equals="Start encryption again"), state="*")
+    dp.register_message_handler(start_encrypt, Text(equals="Start encryption again"), state=Encrypt.states_names)
     dp.register_message_handler(enter_secret_message, state=Encrypt.waiting_for_secret_message)
     dp.register_message_handler(enter_image_container, content_types=["document", "photo"], state=Encrypt.waiting_for_image_container)
     dp.register_message_handler(enter_encryption_key, state=Encrypt.waiting_for_encryption_key)

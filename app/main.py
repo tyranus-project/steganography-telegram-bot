@@ -5,6 +5,7 @@ from app.config import BOT_TOKEN
 from app.handlers.common import register_common_handlers
 from app.handlers.decryption import register_decryption_handlers
 from app.handlers.encryption import register_encryption_handlers
+from app.handlers.errors import register_errors_handlers
 from app.handlers.settings import register_settings_handlers
 from app.handlers.support import register_support_handlers
 from app.utils.middlewares import set_middlewares
@@ -18,6 +19,7 @@ async def on_startup(dp: Dispatcher):
     register_decryption_handlers(dp)
     register_settings_handlers(dp)
     register_support_handlers(dp)
+    register_errors_handlers(dp)
     set_middlewares(dp)
 
 

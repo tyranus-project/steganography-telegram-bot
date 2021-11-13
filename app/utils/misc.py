@@ -7,9 +7,8 @@ from aiogram.dispatcher import FSMContext
 from cryptosteganography import CryptoSteganography
 
 
-async def reset_user_data(message: types.Message, state: FSMContext) -> None:
-    current_state = await state.get_state()
-    if current_state is not None:
+async def reset_user_data(message: types.Message, state: FSMContext = None) -> None:
+    if state and await state.get_state():
         await state.reset_state()
     if os.path.isdir(f"app/data/{message.from_user.id}"):
         shutil.rmtree(f"app/data/{message.from_user.id}")

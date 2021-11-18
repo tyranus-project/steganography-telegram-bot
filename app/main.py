@@ -12,7 +12,7 @@ async def on_startup(dp: Dispatcher):
     await set_default_commands(dp)
 
 
-if __name__ == '__main__':
+def main():
     steganography_bot = Bot(token=BOT_TOKEN, parse_mode=types.ParseMode.HTML)
     storage = MemoryStorage()
     steganography_dispatcher = Dispatcher(steganography_bot, storage=storage)

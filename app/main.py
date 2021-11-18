@@ -1,6 +1,7 @@
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
+from app import middlewares
 from app.config import BOT_TOKEN
 from app.handlers.common import register_common_handlers
 from app.handlers.decryption import register_decryption_handlers
@@ -8,7 +9,6 @@ from app.handlers.encryption import register_encryption_handlers
 from app.handlers.errors import register_errors_handlers
 from app.handlers.settings import register_settings_handlers
 from app.handlers.support import register_support_handlers
-from app.utils.middlewares import set_middlewares
 from app.utils.set_bot_commands import set_default_commands
 
 
@@ -20,7 +20,7 @@ async def on_startup(dp: Dispatcher):
     register_settings_handlers(dp)
     register_support_handlers(dp)
     register_errors_handlers(dp)
-    set_middlewares(dp)
+    middlewares.setup_middlewares(dp)
 
 
 if __name__ == '__main__':

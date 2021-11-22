@@ -7,7 +7,7 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from loguru import logger
 
 from app import middlewares, handlers
-from app.config import BOT_TOKEN
+from app.config import BOT_TOKEN, SKIP_UPDATES
 from app.utils.set_bot_commands import set_default_commands
 
 
@@ -33,4 +33,4 @@ def main():
     steganography_bot = Bot(token=BOT_TOKEN, parse_mode=types.ParseMode.HTML)
     storage = MemoryStorage()
     steganography_dispatcher = Dispatcher(steganography_bot, storage=storage)
-    executor.start_polling(steganography_dispatcher, on_startup=on_startup, on_shutdown=on_shutdown)
+    executor.start_polling(steganography_dispatcher, skip_updates=SKIP_UPDATES, on_startup=on_startup, on_shutdown=on_shutdown)

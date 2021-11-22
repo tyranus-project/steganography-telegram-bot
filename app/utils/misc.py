@@ -30,8 +30,8 @@ def create_encrypted_stego_image(secret_message: str, image_container: str, encr
     return encrypted_stego_container_path
 
 
-def decrypt_stego_image(stego_image: str, decryption_key: str, bot_salt: str) -> str:
-    crypto_steganography = CryptoSteganography(decryption_key + bot_salt)
+def decrypt_stego_image(stego_image: str, decryption_key: str) -> str:
+    crypto_steganography = CryptoSteganography(decryption_key)
     secret_message = crypto_steganography.retrieve(stego_image)
     if secret_message is None:
         crypto_steganography = CryptoSteganography(decryption_key)

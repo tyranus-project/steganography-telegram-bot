@@ -1,9 +1,18 @@
 from aiogram import Dispatcher, types
+from aiogram.types.message import ContentType
 from aiogram.utils.exceptions import BotBlocked, FileIsTooBig
 
 from loguru import logger
 
 from app.utils.misc import reset_user_data
+
+
+async def undefined_request(message: types.Message):
+    await message.answer(
+        "Use the menu buttons and commands, and follow the instructions in the messages.\n\n"
+        "/help to show user manual\n"
+        "/menu to return to the main menu"
+    )
 
 
 async def bot_blocked_exception(update: types.Update, exception: BotBlocked):
@@ -29,7 +38,8 @@ async def unexpected_exception(update: types.Update, exception: Exception):
     return True
 
 
-def register_errors_handlers(dp: Dispatcher):
+def register_unsupported_handlers(dp: Dispatcher):
+    dp.register_message_handler(undefined_request, content_types=ContentType.ANY, state="*")
     dp.register_errors_handler(bot_blocked_exception, exception=BotBlocked)
     dp.register_errors_handler(big_file_exception, exception=FileIsTooBig)
     dp.register_errors_handler(unexpected_exception)

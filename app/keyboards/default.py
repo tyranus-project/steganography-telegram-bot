@@ -3,8 +3,7 @@ from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
 
 main_menu_keyboard = ReplyKeyboardMarkup(
     keyboard=[
-        [KeyboardButton(text="Encrypt"), KeyboardButton(text="Decrypt")],
-        [KeyboardButton(text="Settings"), KeyboardButton(text="Support")]
+        [KeyboardButton(text="Encrypt"), KeyboardButton(text="Decrypt")]
     ],
     resize_keyboard=True
 )

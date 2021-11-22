@@ -2,7 +2,6 @@ from aiogram import Dispatcher, types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
 
-from app import config
 from app.keyboards.default import main_menu_keyboard, decryption_keyboard
 from app.utils.misc import decrypt_stego_image
 from app.utils.misc import reset_user_data
@@ -38,7 +37,7 @@ async def enter_stego_image(message: types.Message, state: FSMContext):
 async def enter_decryption_key(message: types.Message, state: FSMContext):
     await state.update_data(decryption_key=message.text)
     user_data = await state.get_data()
-    decrypted_message_text = decrypt_stego_image(**user_data, bot_salt=config.BOT_SALT)
+    decrypted_message_text = decrypt_stego_image(**user_data)
     if decrypted_message_text:
         await message.answer("The secret message that contained the image is posted below")
         await message.answer(

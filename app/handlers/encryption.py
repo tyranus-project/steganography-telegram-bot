@@ -2,7 +2,6 @@ from aiogram import Dispatcher, types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
 
-from app import config
 from app.keyboards.default import main_menu_keyboard, encryption_keyboard
 from app.utils.misc import create_encrypted_stego_image
 from app.utils.misc import reset_user_data
@@ -40,10 +39,7 @@ async def enter_image_container(message: types.Message, state: FSMContext):
 async def enter_encryption_key(message: types.Message, state: FSMContext):
     if len(message.text) == 4096:
         await message.reply("Please note that this message will be used as your password")
-    if config.USE_BOT_SALT:
-        await state.update_data(encryption_key=message.text + config.BOT_SALT)
-    else:
-        await state.update_data(encryption_key=message.text)
+    await state.update_data(encryption_key=message.text)
     user_data = await state.get_data()
     encrypted_stego_container = create_encrypted_stego_image(**user_data)
     await message.answer_document(types.InputFile(encrypted_stego_container))

@@ -1,17 +1,13 @@
-from aiogram import types, Dispatcher
+from aiogram import Dispatcher, types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
-from aiogram.utils.exceptions import FileIsTooBig
 
-import config
-
-from utils.backend_processes import create_encrypted_stego_image
-from utils.backend_processes import reset_user_data
-from utils.backend_processes import save_user_file_as_image
-
-from keyboards.default import main_menu_keyboard, encryption_keyboard
-
-from utils.states import Encrypt
+from app import config
+from app.keyboards.default import main_menu_keyboard, encryption_keyboard
+from app.utils.misc import create_encrypted_stego_image
+from app.utils.misc import reset_user_data
+from app.utils.misc import save_user_image
+from app.utils.states import Encrypt
 
 
 async def start_encrypt(message: types.Message, state: FSMContext):
@@ -33,16 +29,12 @@ async def enter_secret_message(message: types.Message, state: FSMContext):
 
 async def enter_image_container(message: types.Message, state: FSMContext):
     if message.content_type == "document" and message.document.mime_type.split('/')[0] != "image":
-        await message.answer("The file you sent is not an image. Try again!")
+        await message.reply("The file you sent is not an image. Try again!")
         return
-    try:
-        user_image = await save_user_file_as_image(message, "jpg")
-    except FileIsTooBig:
-        await message.reply("This image is too big, please try another one!")
-    else:
-        await message.answer("Enter the password to encrypt your secret text now and decrypt later")
-        await state.update_data(image_container=user_image)
-        await Encrypt.next()
+    user_image = await save_user_image(message)
+    await message.answer("Enter the password to encrypt your secret text now and decrypt later")
+    await state.update_data(image_container=user_image)
+    await Encrypt.next()
 
 
 async def enter_encryption_key(message: types.Message, state: FSMContext):
@@ -53,26 +45,18 @@ async def enter_encryption_key(message: types.Message, state: FSMContext):
     else:
         await state.update_data(encryption_key=message.text)
     user_data = await state.get_data()
-    try:
-        encrypted_stego_container = create_encrypted_stego_image(**user_data)
-    except Exception:
-        await message.answer(
-            "Something went wrong. Start again!",
-            reply_markup=main_menu_keyboard
-        )
-    else:
-        await message.answer_document(types.InputFile(encrypted_stego_container))
-        await message.answer(
-            "Your text is hidden and encrypted in the file above",
-            reply_markup=main_menu_keyboard
-        )
-    finally:
-        await reset_user_data(message, state)
+    encrypted_stego_container = create_encrypted_stego_image(**user_data)
+    await message.answer_document(types.InputFile(encrypted_stego_container))
+    await message.answer(
+        "Your text is hidden and encrypted in the file above",
+        reply_markup=main_menu_keyboard
+    )
+    await reset_user_data(message, state)
 
 
-def register_handlers_encryption(dp: Dispatcher):
+def register_encryption_handlers(dp: Dispatcher):
     dp.register_message_handler(start_encrypt, Text(equals="Encrypt", ignore_case=True))
-    dp.register_message_handler(start_encrypt, Text(equals="Start encryption again"), state="*")
+    dp.register_message_handler(start_encrypt, Text(equals="Start encryption again"), state=Encrypt.states_names)
     dp.register_message_handler(enter_secret_message, state=Encrypt.waiting_for_secret_message)
     dp.register_message_handler(enter_image_container, content_types=["document", "photo"], state=Encrypt.waiting_for_image_container)
     dp.register_message_handler(enter_encryption_key, state=Encrypt.waiting_for_encryption_key)

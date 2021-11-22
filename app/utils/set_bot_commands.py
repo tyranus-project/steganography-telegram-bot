@@ -1,4 +1,4 @@
-from aiogram import types, Dispatcher
+from aiogram import Dispatcher, types
 
 
 async def set_default_commands(dp: Dispatcher):

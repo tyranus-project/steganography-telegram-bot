@@ -1,3 +1,4 @@
+import hashlib
 import os
 import shutil
 
@@ -6,16 +7,24 @@ from aiogram.dispatcher import FSMContext
 
 from cryptosteganography import CryptoSteganography
 
+from app.config import SESSION_SALT
+
+
+def hash_id(user_id: int, use_salt: bool = True) -> str:
+    hashing_id = str(user_id).encode()
+    hashed_id = hashlib.sha256(hashing_id + SESSION_SALT.encode()) if use_salt else hashlib.sha256(hashing_id)
+    return hashed_id.hexdigest()
+
 
 async def reset_user_data(message: types.Message, state: FSMContext = None) -> None:
     if state and await state.get_state():
         await state.reset_state()
-    if os.path.isdir(f"app/data/{message.from_user.id}"):
-        shutil.rmtree(f"app/data/{message.from_user.id}")
+    if os.path.isdir(f"app/data/{hash_id(message.from_user.id)}"):
+        shutil.rmtree(f"app/data/{hash_id(message.from_user.id)}")
 
 
 async def save_user_image(message: types.Message, raster_format: str = "jpg") -> str:
-    image_save_path = f"app/data/{message.from_user.id}/{message.message_id}_image.{raster_format}"
+    image_save_path = f"app/data/{hash_id(message.from_user.id)}/{message.message_id}_image.{raster_format}"
     if message.content_type == "document":
         await message.document.download(destination_file=image_save_path)
     else:

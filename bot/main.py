@@ -6,9 +6,9 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
 from loguru import logger
 
-from app import middlewares, handlers
-from app.config import BOT_TOKEN, SKIP_UPDATES
-from app.utils.commands import set_default_commands
+from bot import middlewares, handlers
+from bot.config import BOT_TOKEN, SKIP_UPDATES
+from bot.utils.commands import set_default_commands
 
 
 async def on_startup(dp: Dispatcher):

@@ -2,11 +2,11 @@ from aiogram import Dispatcher, types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
 
-from app.keyboards.default import main_menu_keyboard, encryption_keyboard
-from app.utils.misc import create_encrypted_stego_image
-from app.utils.misc import reset_user_data
-from app.utils.misc import save_user_image
-from app.utils.states import Encrypt
+from bot.keyboards.default import main_menu_keyboard, encryption_keyboard
+from bot.utils.misc import create_encrypted_stego_image
+from bot.utils.misc import reset_user_data
+from bot.utils.misc import save_user_image
+from bot.utils.states import Encrypt
 
 
 async def start_encrypt(message: types.Message, state: FSMContext):

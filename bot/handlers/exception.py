@@ -4,7 +4,7 @@ from aiogram.utils.exceptions import BotBlocked, FileIsTooBig
 
 from loguru import logger
 
-from app.utils.misc import reset_user_data
+from bot.utils.misc import reset_user_data
 
 
 async def undefined_request(message: types.Message):

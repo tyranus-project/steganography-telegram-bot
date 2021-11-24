@@ -3,22 +3,22 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher.filters.builtin import CommandHelp, CommandStart
 
-from app.keyboards.default import main_menu_keyboard
-from app.utils.misc import reset_user_data
-from app.utils.states import crypt_states
+from bot.keyboards.default import main_menu_keyboard
+from bot.utils.misc import reset_user_data
+from bot.utils.states import crypt_states
 
 
 async def cmd_start(message: types.Message, state: FSMContext):
     await reset_user_data(message, state)
     await message.answer(
         "Welcome!\n\n"
-        "This bot helps to hide your secret messages inside images."
+        "This bot helps to hide your secret messages inside images.",
+        reply_markup=main_menu_keyboard
     )
     await message.answer(
         "You can read the instructions:\n\n"
         "/help - detailed instructions\n\n"
         "Or just use the menu buttons and follow the directions in the messages.",
-        reply_markup=main_menu_keyboard
     )
 
 

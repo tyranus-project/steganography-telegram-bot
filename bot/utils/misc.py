@@ -8,7 +8,7 @@ from aiogram.dispatcher import FSMContext
 
 from cryptosteganography import CryptoSteganography
 
-from app.config import SESSION_SALT
+from bot.config import SESSION_SALT
 
 
 def hash_id(user_id: int, use_salt: bool = True) -> str:

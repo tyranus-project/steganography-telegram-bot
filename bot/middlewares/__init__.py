@@ -2,7 +2,7 @@ from aiogram import Dispatcher
 
 from loguru import logger
 
-from app.config import THROTTLING_RATE_LIMIT
+from bot.config import THROTTLING_RATE_LIMIT
 
 from .throttling import ThrottlingMiddleware
 

@@ -1,6 +1,6 @@
 from loguru import logger
 
-from app.main import main
+from bot.main import main
 
 
 try:

@@ -38,7 +38,7 @@ async def unexpected_exception(update: types.Update, exception: Exception):
     return True
 
 
-def register_unsupported_handlers(dp: Dispatcher):
+def register_exception_handlers(dp: Dispatcher):
     dp.register_message_handler(undefined_request, content_types=ContentType.ANY, state="*")
     dp.register_errors_handler(bot_blocked_exception, exception=BotBlocked)
     dp.register_errors_handler(big_file_exception, exception=FileIsTooBig)

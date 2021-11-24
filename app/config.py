@@ -1,3 +1,5 @@
+import uuid
+
 from environs import Env
 
 
@@ -8,3 +10,5 @@ BOT_TOKEN = env.str("BOT_TOKEN")
 
 SKIP_UPDATES = env.bool("SKIP_UPDATES", default=False)
 THROTTLING_RATE_LIMIT = env.float("THROTTLING_RATE_LIMIT", default=0.1)
+
+SESSION_SALT = uuid.uuid4().hex

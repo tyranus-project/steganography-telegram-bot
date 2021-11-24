@@ -1,21 +1,31 @@
+import hashlib
 import os
 import shutil
+import uuid
 
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 
 from cryptosteganography import CryptoSteganography
 
+from app.config import SESSION_SALT
+
+
+def hash_id(user_id: int, use_salt: bool = True) -> str:
+    hashing_id = str(user_id).encode()
+    hashed_id = hashlib.sha256(hashing_id + SESSION_SALT.encode()) if use_salt else hashlib.sha256(hashing_id)
+    return hashed_id.hexdigest()
+
 
 async def reset_user_data(message: types.Message, state: FSMContext = None) -> None:
     if state and await state.get_state():
         await state.reset_state()
-    if os.path.isdir(f"app/data/{message.from_user.id}"):
-        shutil.rmtree(f"app/data/{message.from_user.id}")
+    if os.path.isdir(f"tmp/{hash_id(message.from_user.id)}"):
+        shutil.rmtree(f"tmp/{hash_id(message.from_user.id)}")
 
 
 async def save_user_image(message: types.Message, raster_format: str = "jpg") -> str:
-    image_save_path = f"app/data/{message.from_user.id}/{message.message_id}_image.{raster_format}"
+    image_save_path = f"tmp/{hash_id(message.from_user.id)}/{uuid.uuid4()}.{raster_format}"
     if message.content_type == "document":
         await message.document.download(destination_file=image_save_path)
     else:
@@ -25,7 +35,7 @@ async def save_user_image(message: types.Message, raster_format: str = "jpg") ->
 
 def create_encrypted_stego_image(secret_message: str, image_container: str, encryption_key: str) -> str:
     crypto_steganography = CryptoSteganography(encryption_key)
-    encrypted_stego_container_path = f"{image_container.split('.')[0][:-6]}.png"
+    encrypted_stego_container_path = f"{os.path.dirname(image_container)}/{str(uuid.uuid4()).split('-')[-1]}.png"
     crypto_steganography.hide(image_container, encrypted_stego_container_path, secret_message)
     return encrypted_stego_container_path
 

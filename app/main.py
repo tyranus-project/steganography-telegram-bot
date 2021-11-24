@@ -20,8 +20,8 @@ async def on_startup(dp: Dispatcher):
 
 async def on_shutdown(dp: Dispatcher):
     logger.info("Shutting down...")
-    if os.path.isdir(f"app/data"):
-        shutil.rmtree(f"app/data")
+    if os.path.isdir(f"tmp/"):
+        shutil.rmtree(f"tmp/")
     await dp.bot.session.close()
     await dp.storage.close()
     await dp.storage.wait_closed()

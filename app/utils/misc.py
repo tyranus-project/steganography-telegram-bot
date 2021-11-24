@@ -20,12 +20,12 @@ def hash_id(user_id: int, use_salt: bool = True) -> str:
 async def reset_user_data(message: types.Message, state: FSMContext = None) -> None:
     if state and await state.get_state():
         await state.reset_state()
-    if os.path.isdir(f"app/data/{hash_id(message.from_user.id)}"):
-        shutil.rmtree(f"app/data/{hash_id(message.from_user.id)}")
+    if os.path.isdir(f"tmp/{hash_id(message.from_user.id)}"):
+        shutil.rmtree(f"tmp/{hash_id(message.from_user.id)}")
 
 
 async def save_user_image(message: types.Message, raster_format: str = "jpg") -> str:
-    image_save_path = f"app/data/{hash_id(message.from_user.id)}/{uuid.uuid4()}.{raster_format}"
+    image_save_path = f"tmp/{hash_id(message.from_user.id)}/{uuid.uuid4()}.{raster_format}"
     if message.content_type == "document":
         await message.document.download(destination_file=image_save_path)
     else:

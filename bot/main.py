@@ -7,7 +7,7 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from loguru import logger
 
 from bot import middlewares, handlers
-from bot.config import BOT_TOKEN, SKIP_UPDATES
+from bot.config import BOT_TOKEN, SKIP_UPDATES, DATA_DIR
 from bot.utils.commands import set_default_commands
 
 
@@ -20,8 +20,11 @@ async def on_startup(dp: Dispatcher):
 
 async def on_shutdown(dp: Dispatcher):
     logger.info("Shutting down...")
-    if os.path.isdir(f"tmp/"):
-        shutil.rmtree(f"tmp/")
+    if os.path.isdir(DATA_DIR):
+        try:
+            shutil.rmtree(DATA_DIR)
+        except OSError:
+            logger.info("The bot was worked in the container with a tmpfs mount...")
     await dp.bot.session.close()
     await dp.storage.close()
     await dp.storage.wait_closed()

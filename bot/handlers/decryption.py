@@ -12,7 +12,7 @@ async def start_decryption_process(message: types.Message, state: FSMContext):
     await message.answer("Send your stego image - the image with a hidden and encrypted message in it.")
     await message.answer(
         "IMPORTANT\n"
-        "The image must be sent as a file!",
+        "The image must be sent as a file.",
         reply_markup=decryption_keyboard
     )
     await Decryption.stego_image.set()
@@ -20,9 +20,9 @@ async def start_decryption_process(message: types.Message, state: FSMContext):
 
 async def add_stego_image(message: types.Message, state: FSMContext):
     if message.content_type == "photo":
-        await message.reply("The image must be sent as a file. Try again!")
+        await message.reply("The image must be sent as a file. Try again.")
     elif message.document.mime_type.split('/')[0] != "image":
-        await message.reply("The file you sent is not an image. Try again!")
+        await message.reply("The file you sent is not an image. Try again.")
     else:
         stego_image = await save_container_image(message)
         await state.update_data(stego_image=stego_image)
@@ -35,7 +35,7 @@ async def add_decryption_key(message: types.Message, state: FSMContext):
     user_data = await state.get_data()
     decrypted_message_text = decrypt_stego_image(**user_data)
     if decrypted_message_text:
-        await message.answer("The secret message that contained the image is posted below.")
+        await message.answer("The secret message that contained the stego image is posted below.")
         await message.answer(
             f"{decrypted_message_text}",
             reply_markup=main_menu_keyboard

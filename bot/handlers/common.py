@@ -11,9 +11,21 @@ from bot.utils.states import cryption_states
 async def cmd_start(message: types.Message, state: FSMContext):
     await reset_user_data(message, state)
     await message.answer(
-        "Welcome!\n"
-        "This bot helps to hide your secret messages inside images.",
+        "Welcome!\n\n"
+        "Steganography is the art and science of invisible communication. "
+        "It is achieved by hiding the message information in some other carrier media.\n\n"
+        "Image steganography is a subset of steganography where messages are hidden in image files. "
+        "The original image, before any message is hidden in it, is referred to as the cover image. "
+        "After hiding the message in it, it is referred to as the stego image. "
+        "For human eye, these two images must be identical (in appearance at least).",
         reply_markup=main_menu_keyboard
+    )
+    await message.answer(
+        "This bot provides image steganography tools for secret messages as text, both for encryption and decryption. "
+        "Additionally, this implementation also enhance the security of the steganography through data encryption.\n\n"
+        "Just use the menu buttons or commands and follow the instructions in the messages:\n"
+        "/encrypt to start encryption process\n"
+        "/decrypt to start decryption process\n"
     )
 
 

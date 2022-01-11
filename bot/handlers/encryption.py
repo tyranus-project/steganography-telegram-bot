@@ -10,7 +10,7 @@ from bot.utils.states import Encryption
 async def start_encryption_process(message: types.Message, state: FSMContext):
     await reset_user_data(message, state)
     await message.answer(
-        "Send the image in which your secret message will be hidden and encrypted.",
+        "Send your cover image - the image in which your secret message will be hidden and encrypted.",
         reply_markup=encryption_keyboard
     )
     await Encryption.cover_image.set()
@@ -18,11 +18,11 @@ async def start_encryption_process(message: types.Message, state: FSMContext):
 
 async def add_cover_image(message: types.Message, state: FSMContext):
     if message.content_type == "document" and message.document.mime_type.split('/')[0] != "image":
-        await message.reply("The file you sent is not an image. Try again!")
+        await message.reply("The file you sent is not an image. Try again.")
         return
     cover_image = await save_container_image(message)
     await state.update_data(cover_image=cover_image)
-    await message.answer("Enter the secret text you want to encrypt.")
+    await message.answer("Enter the secret text message you want to encrypt.")
     await Encryption.next()
 
 
@@ -30,7 +30,7 @@ async def add_secret_message(message: types.Message, state: FSMContext):
     if len(message.text) == 4096:
         await message.reply("Please note that this message will be encrypted.")
     await state.update_data(secret_message=message.text)
-    await message.answer("Enter the password to encrypt your secret text now and decrypt later.")
+    await message.answer("Enter the password to encrypt now and decrypt later.")
     await Encryption.next()
 
 
@@ -42,7 +42,7 @@ async def add_encryption_key(message: types.Message, state: FSMContext):
     stego_image = encrypt_stego_image(**user_data)
     await message.answer_document(types.InputFile(stego_image))
     await message.answer(
-        "Your text is hidden and encrypted in the file above.",
+        "Stego image successfully created. Your secret text message is hidden and encrypted in the image above.",
         reply_markup=main_menu_keyboard
     )
     await reset_user_data(message, state)

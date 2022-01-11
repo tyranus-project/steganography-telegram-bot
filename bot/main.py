@@ -15,7 +15,7 @@ async def on_startup(dp: Dispatcher):
     handlers.setup_handlers(dp)
     middlewares.setup_middlewares(dp)
     await set_default_commands(dp)
-    logger.info("Steganography bot launched!")
+    logger.info("Steganography bot launched.")
 
 
 async def on_shutdown(dp: Dispatcher):
@@ -28,7 +28,7 @@ async def on_shutdown(dp: Dispatcher):
     await dp.bot.session.close()
     await dp.storage.close()
     await dp.storage.wait_closed()
-    logger.info("Steganography bot finished!")
+    logger.info("Steganography bot finished.")
 
 
 def main():

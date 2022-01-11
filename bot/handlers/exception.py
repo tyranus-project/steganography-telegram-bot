@@ -18,12 +18,12 @@ async def undefined_request(message: types.Message):
 
 async def bot_blocked_exception(update: types.Update, exception: BotBlocked):
     await reset_user_data(update.message)
-    logger.info(f"{exception}, all user data has been cleared")
+    logger.info(f"{exception}, all user data has been cleared.")
     return True
 
 
 async def big_file_exception(update: types.Update, exception: FileIsTooBig):
-    await update.message.reply(f"{exception}. Please try another one!")
+    await update.message.reply(f"{exception}. Please try another one.")
     return True
 
 
@@ -31,8 +31,8 @@ async def unexpected_exception(update: types.Update, exception: Exception):
     if isinstance(exception, (BotBlocked, FileIsTooBig)):
         return True
     await update.message.answer(
-        "Sorry, something went wrong...\n"
-        "It is better to restart the bot:\n\n"
+        "Sorry, something went wrong...\n\n"
+        "It is better to restart the bot:\n"
         "/start to restart the bot"
     )
     logger.debug(f"Unexpected exception: {exception}")

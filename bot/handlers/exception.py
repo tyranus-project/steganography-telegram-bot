@@ -9,9 +9,10 @@ from bot.utils.misc import reset_user_data
 
 async def undefined_request(message: types.Message):
     await message.answer(
-        "Use the menu buttons and commands, and follow the instructions in the messages.\n\n"
-        "/help to show user manual\n"
-        "/menu to return to the main menu"
+        "Use the menu buttons or commands and follow the instructions in the messages:\n"
+        "/menu to return to the main menu\n"
+        "/encrypt to start encryption process\n"
+        "/decrypt to start decryption process\n"
     )
 
 

@@ -2,7 +2,7 @@ from aiogram import Dispatcher, types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
 
-from bot.keyboards.default import decryption_keyboard, main_menu_keyboard
+from bot.utils.keyboards import decryption_keyboard, main_menu_keyboard
 from bot.utils.misc import decrypt_stego_image, reset_user_data, save_container_image
 from bot.utils.states import Decryption
 
@@ -11,7 +11,7 @@ async def start_decryption_process(message: types.Message, state: FSMContext):
     await reset_user_data(message, state)
     await message.answer("Send your stego image - the image with a hidden and encrypted message in it.")
     await message.answer(
-        "IMPORTANT\n"
+        "<b>Important!</b>\n"
         "The image must be sent as a file.",
         reply_markup=decryption_keyboard
     )
@@ -50,7 +50,7 @@ async def add_decryption_key(message: types.Message, state: FSMContext):
 
 def register_decryption_handlers(dp: Dispatcher):
     dp.register_message_handler(start_decryption_process, commands=["decrypt"], state="*")
-    dp.register_message_handler(start_decryption_process, Text(equals="Decrypt", ignore_case=True))
+    dp.register_message_handler(start_decryption_process, Text(equals="🔓 Decrypt", ignore_case=True))
     dp.register_message_handler(start_decryption_process, Text(equals="Start decryption again"), state=Decryption.states_names)
     dp.register_message_handler(add_stego_image, content_types=["document", "photo"], state=Decryption.stego_image)
     dp.register_message_handler(add_decryption_key, state=Decryption.decryption_key)

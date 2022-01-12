@@ -2,7 +2,7 @@ from aiogram import Dispatcher, types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
 
-from bot.keyboards.default import encryption_keyboard, main_menu_keyboard
+from bot.utils.keyboards import encryption_keyboard, main_menu_keyboard
 from bot.utils.misc import encrypt_stego_image, reset_user_data, save_container_image
 from bot.utils.states import Encryption
 
@@ -50,7 +50,7 @@ async def add_encryption_key(message: types.Message, state: FSMContext):
 
 def register_encryption_handlers(dp: Dispatcher):
     dp.register_message_handler(start_encryption_process, commands=["encrypt"], state="*")
-    dp.register_message_handler(start_encryption_process, Text(equals="Encrypt", ignore_case=True))
+    dp.register_message_handler(start_encryption_process, Text(equals="🔐 Encrypt", ignore_case=True))
     dp.register_message_handler(start_encryption_process, Text(equals="Start encryption again"), state=Encryption.states_names)
     dp.register_message_handler(add_secret_message, state=Encryption.secret_message)
     dp.register_message_handler(add_cover_image, content_types=["document", "photo"], state=Encryption.cover_image)

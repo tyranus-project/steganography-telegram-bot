@@ -12,7 +12,7 @@ async def undefined_request(message: types.Message):
         "Use the menu buttons or commands and follow the instructions in the messages:\n"
         "/menu to return to the main menu\n"
         "/encrypt to start encryption process\n"
-        "/decrypt to start decryption process\n"
+        "/decrypt to start decryption process"
     )
 
 

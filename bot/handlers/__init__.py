@@ -8,7 +8,8 @@ from .encryption import register_encryption_handlers
 from .exception import register_exception_handlers
 
 
-def setup_handlers(dp: Dispatcher):
+def register_handlers(dp: Dispatcher):
+    """Sets all bot handlers."""
     logger.info("Configuring handlers...")
     register_common_handlers(dp)
     register_encryption_handlers(dp)

@@ -1,15 +1,17 @@
 from aiogram.dispatcher.filters.state import State, StatesGroup
 
 
-class Encrypt(StatesGroup):
-    waiting_for_secret_message = State()
-    waiting_for_image_container = State()
-    waiting_for_encryption_key = State()
+class Encryption(StatesGroup):
+    """Class for the encryption process states."""
+    cover_image = State()
+    secret_message = State()
+    encryption_key = State()
 
 
-class Decrypt(StatesGroup):
-    waiting_for_stego_image = State()
-    waiting_for_decryption_key = State()
+class Decryption(StatesGroup):
+    """Class for the decryption process states."""
+    stego_image = State()
+    decryption_key = State()
 
 
-crypt_states = Encrypt.states_names + Decrypt.states_names
+cryption_states = Encryption.states_names + Decryption.states_names

@@ -30,12 +30,14 @@ async def big_file_exception(update: types.Update, exception: FileIsTooBig):
 async def unexpected_exception(update: types.Update, exception: Exception):
     if isinstance(exception, (BotBlocked, FileIsTooBig)):
         return True
-    await update.message.answer(
-        "Sorry, something went wrong...\n\n"
-        "It is better to restart the bot:\n"
-        "/start to restart the bot"
-    )
-    logger.debug(f"Unexpected exception: {exception}")
+    try:
+        await update.message.answer(
+            "Sorry, something went wrong...\n\n"
+            "It is better to restart the bot:\n"
+            "/start to restart the bot"
+        )
+    finally:
+        logger.debug(f"Unexpected exception: {exception}")
     return True
 
 

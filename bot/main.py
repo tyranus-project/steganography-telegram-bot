@@ -25,6 +25,11 @@ async def on_shutdown(dp: Dispatcher):
             shutil.rmtree(DATA_DIR)
         except OSError:
             logger.info("The bot was worked in the container with a tmpfs mount.")
+        except Exception as e:
+            logger.debug(
+                "Unexpected error while deleting data:\n"
+                f"{e}"
+            )
     await dp.bot.session.close()
     await dp.storage.close()
     await dp.storage.wait_closed()

@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+
+  steganography-telegram-bot:
+    container_name: steganography-telegram-bot
+    build: .
+    stop_signal: SIGINT
+    restart: always
+    tmpfs:
+      - /steganography-telegram-bot/${DATA_DIR}
+    env_file:
+      - .env

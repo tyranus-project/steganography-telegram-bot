@@ -12,7 +12,7 @@ from bot.utils.commands import set_default_commands
 
 
 async def on_startup(dp: Dispatcher):
-    handlers.setup_handlers(dp)
+    handlers.register_handlers(dp)
     middlewares.setup_middlewares(dp)
     await set_default_commands(dp)
     logger.info("Steganography bot launched.")

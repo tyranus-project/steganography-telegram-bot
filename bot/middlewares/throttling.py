@@ -6,6 +6,7 @@ from aiogram.utils.exceptions import Throttled
 
 
 class ThrottlingMiddleware(BaseMiddleware):
+    """Class for simple throttling middleware."""
 
     def __init__(self, limit=DEFAULT_RATE_LIMIT, key_prefix='antiflood_'):
         self.rate_limit = limit

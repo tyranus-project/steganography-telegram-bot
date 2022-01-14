@@ -2,6 +2,7 @@ from aiogram import Dispatcher, types
 
 
 async def set_default_commands(dp: Dispatcher):
+    """Sets the bot commands to the bot user interface."""
     await dp.bot.set_my_commands(
         [
             types.BotCommand("/menu", "Main menu"),

@@ -15,7 +15,7 @@ from bot.config import DATA_DIR, SESSION_SALT
 LENGTH_LIMIT = 4096
 
 
-def hash_id(user_id: int, use_salt: bool = True) -> str:
+def hash_user_id(user_id: int, use_salt: bool = True) -> str:
     """Hashes the passed identifier using SHA-256 and optionally adding the session salt."""
     hashing_id = str(user_id).encode()
     hashed_id = hashlib.sha256(hashing_id + SESSION_SALT.encode()) if use_salt else hashlib.sha256(hashing_id)
@@ -26,13 +26,13 @@ async def reset_user_data(message: types.Message, state: FSMContext = None) -> N
     """Resets the current user state and user data (if passed and present)."""
     if state and await state.get_state():
         await state.reset_state()
-    if os.path.isdir(f"{DATA_DIR}/{hash_id(message.from_user.id)}"):
-        shutil.rmtree(f"{DATA_DIR}/{hash_id(message.from_user.id)}")
+    if os.path.isdir(f"{DATA_DIR}/{hash_user_id(message.from_user.id)}"):
+        shutil.rmtree(f"{DATA_DIR}/{hash_user_id(message.from_user.id)}")
 
 
 async def save_container_image(message: types.Message, raster_format: str = "jpg") -> str:
     """Downloads and saves a file from the user message as an image in the desired format and hashes its name."""
-    container_image_save_path = f"{DATA_DIR}/{hash_id(message.from_user.id)}/{uuid.uuid4()}.{raster_format}"
+    container_image_save_path = f"{DATA_DIR}/{hash_user_id(message.from_user.id)}/{uuid.uuid4()}.{raster_format}"
     if message.content_type == "document":
         await message.document.download(destination_file=container_image_save_path)
     else:

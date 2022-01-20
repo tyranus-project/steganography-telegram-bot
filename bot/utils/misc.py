@@ -11,6 +11,10 @@ from cryptosteganography import CryptoSteganography
 from bot.config import DATA_DIR, SESSION_SALT
 
 
+# Telegram has a limit when sending message of 4096 chars
+LENGTH_LIMIT = 4096
+
+
 def hash_id(user_id: int, use_salt: bool = True) -> str:
     """Hashes the passed identifier using SHA-256 and optionally adding the session salt."""
     hashing_id = str(user_id).encode()

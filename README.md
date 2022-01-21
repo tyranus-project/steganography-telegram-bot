@@ -34,6 +34,11 @@ mv .env.dist .env
 
 - Set `BOT_TOKEN` to the value obtained using the step described above.
 
+- Change the value of `SKIP_UPDATES` to `True` if you want to process messages sent to the bot when it was not running.
+
+- The `DATA_DIR` value is used to determine the storage path for files coming from the user. 
+Here, a `tmpfs` mount is used as storage, so be aware of all the assumptions and limitations of this mount method.
+
 4. Install [Docker Compose](https://docs.docker.com/compose/install/).
 
 5. Build and run your container:
@@ -71,6 +76,10 @@ mv .env.dist .env
 
 - Set `BOT_TOKEN` to the value obtained using the step described above.
 
+- Change the value of `SKIP_UPDATES` to `True` if you want to process messages sent to the bot when it was not running.
+
+- The `DATA_DIR` value is used to determine the storage path for files coming from the user.
+
 6. Launch bot:
 
 ```
@@ -80,3 +89,9 @@ python -m bot
 ## License
 
 This project is released under the MIT License. See [LICENSE](https://github.com/neuromeow/ssh-telegram-bot/blob/master/LICENSE) for the full licensing condition.
+
+## Acknowledgments
+
+- [aiogram](https://github.com/aiogram/aiogram)
+
+- [cryptosteganography](https://github.com/computationalcore/cryptosteganography)

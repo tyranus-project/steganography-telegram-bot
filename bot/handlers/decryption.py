@@ -3,7 +3,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
 
 from bot.utils.keyboards import decryption_keyboard, main_menu_keyboard
-from bot.utils.misc import decrypt_stego_image, reset_user_data, save_container_image
+from bot.utils.misc import LENGTH_LIMIT, decrypt_stego_image, reset_user_data, save_container_image
 from bot.utils.states import Decryption
 
 
@@ -34,6 +34,8 @@ async def add_stego_image(message: types.Message, state: FSMContext):
 
 async def add_decryption_key(message: types.Message, state: FSMContext):
     """Ends the decryption process by sending the secret text message to the user and resets the current user data."""
+    if len(message.text) == LENGTH_LIMIT:
+        await message.reply("Please note that this message will be used as your password.")
     await state.update_data(decryption_key=message.text)
     user_data = await state.get_data()
     decrypted_message_text = decrypt_stego_image(**user_data)

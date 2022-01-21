@@ -5,7 +5,7 @@ from aiogram.dispatcher.filters.builtin import CommandStart
 
 from bot.utils.keyboards import main_menu_keyboard
 from bot.utils.misc import reset_user_data
-from bot.utils.states import cryption_states
+from bot.utils.states import cryption_states_names
 
 
 async def cmd_start(message: types.Message, state: FSMContext):
@@ -53,4 +53,4 @@ def register_common_handlers(dp: Dispatcher):
     """Sets the common handlers."""
     dp.register_message_handler(cmd_start, CommandStart(), state="*")
     dp.register_message_handler(cmd_main_menu, commands=["menu"], state="*")
-    dp.register_message_handler(cancel_action, Text(equals="Cancel", ignore_case=True), state=cryption_states)
+    dp.register_message_handler(cancel_action, Text(equals="Cancel", ignore_case=True), state=cryption_states_names)

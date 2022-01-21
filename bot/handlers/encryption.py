@@ -3,7 +3,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
 
 from bot.utils.keyboards import encryption_keyboard, main_menu_keyboard
-from bot.utils.misc import encrypt_stego_image, reset_user_data, save_container_image
+from bot.utils.misc import LENGTH_LIMIT, encrypt_stego_image, reset_user_data, save_container_image
 from bot.utils.states import Encryption
 
 
@@ -30,7 +30,7 @@ async def add_cover_image(message: types.Message, state: FSMContext):
 
 async def add_secret_message(message: types.Message, state: FSMContext):
     """Receives the secret text message and switches to the state of waiting for an encryption key from the user."""
-    if len(message.text) == 4096:
+    if len(message.text) == LENGTH_LIMIT:
         await message.reply("Please note that this message will be encrypted.")
     await state.update_data(secret_message=message.text)
     await message.answer("Enter the password to encrypt now and decrypt later.")
@@ -39,7 +39,7 @@ async def add_secret_message(message: types.Message, state: FSMContext):
 
 async def add_encryption_key(message: types.Message, state: FSMContext):
     """Ends the encryption process by sending the encrypted stego image to the user and resets the current user data."""
-    if len(message.text) == 4096:
+    if len(message.text) == LENGTH_LIMIT:
         await message.reply("Please note that this message will be used as your password.")
     await state.update_data(encryption_key=message.text)
     user_data = await state.get_data()

@@ -20,7 +20,7 @@ async def undefined_request(message: types.Message):
 async def bot_blocked_exception(update: types.Update, exception: BotBlocked):
     """Catches and logs BotBlocked exception."""
     await reset_user_data(update.message)
-    logger.info(f"{exception}, all user data has been cleared.")
+    logger.info(f"{exception}. All user data has been cleared.")
     return True
 
 
@@ -42,7 +42,7 @@ async def unexpected_exception(update: types.Update, exception: Exception):
         )
     finally:
         logger.debug(f"Unexpected exception: {exception}")
-    return True
+        return True
 
 
 def register_exception_handlers(dp: Dispatcher):

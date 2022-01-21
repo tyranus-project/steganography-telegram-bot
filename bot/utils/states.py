@@ -14,4 +14,4 @@ class Decryption(StatesGroup):
     decryption_key = State()
 
 
-cryption_states = Encryption.states_names + Decryption.states_names
+cryption_states_names = Encryption.states_names + Decryption.states_names

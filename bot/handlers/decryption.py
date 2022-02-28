@@ -10,7 +10,7 @@ from bot.utils.states import Decryption
 async def start_decryption_process(message: types.Message, state: FSMContext):
     """Resets the current user data and switches to the state of waiting for a stego image from the user."""
     await reset_user_data(message, state)
-    await message.answer("Send your stego image - the image with a hidden and encrypted message in it.")
+    await message.answer("Send your stego image – the image with a hidden and encrypted message in it.")
     await message.answer(
         "<b>Important!</b>\n"
         "The image must be sent as a file.",

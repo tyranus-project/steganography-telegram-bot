@@ -8,12 +8,12 @@ main_menu_keyboard = ReplyKeyboardMarkup(
 
 
 encryption_keyboard = ReplyKeyboardMarkup(
-    keyboard=[[KeyboardButton(text="Start encryption again"), KeyboardButton(text="Cancel")]],
+    keyboard=[[KeyboardButton(text="Restart encryption"), KeyboardButton(text="Cancel")]],
     resize_keyboard=True
 )
 
 
 decryption_keyboard = ReplyKeyboardMarkup(
-    keyboard=[[KeyboardButton(text="Start decryption again"), KeyboardButton(text="Cancel")]],
+    keyboard=[[KeyboardButton(text="Restart decryption"), KeyboardButton(text="Cancel")]],
     resize_keyboard=True
 )

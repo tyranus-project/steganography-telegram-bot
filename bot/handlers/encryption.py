@@ -11,7 +11,7 @@ async def start_encryption_process(message: types.Message, state: FSMContext):
     """Resets the current user data and switches to the state of waiting for a cover image from the user."""
     await reset_user_data(message, state)
     await message.answer(
-        "Send your cover image - the image in which your secret message will be hidden and encrypted.",
+        "Send your cover image – the image in which your secret message will be hidden and encrypted.",
         reply_markup=encryption_keyboard
     )
     await Encryption.cover_image.set()

@@ -11,14 +11,16 @@ from bot.config import BOT_TOKEN, DATA_DIR, SKIP_UPDATES
 from bot.utils.commands import set_default_commands
 
 
-async def on_startup(dp: Dispatcher):
+async def on_startup(dp: Dispatcher) -> None:
+    """Registers the callbacks for the startup process."""
     handlers.register_handlers(dp)
     middlewares.setup_middlewares(dp)
     await set_default_commands(dp)
     logger.info("Steganography bot launched.")
 
 
-async def on_shutdown(dp: Dispatcher):
+async def on_shutdown(dp: Dispatcher) -> None:
+    """Registers the callbacks for the shutdown process."""
     logger.info("Shutting down...")
     if os.path.isdir(DATA_DIR):
         try:
@@ -36,7 +38,8 @@ async def on_shutdown(dp: Dispatcher):
     logger.info("Steganography bot finished.")
 
 
-def main():
+def main() -> None:
+    """Starts bot in long-polling mode."""
     logger.info("Starting steganography bot...")
     steganography_bot = Bot(token=BOT_TOKEN, parse_mode=types.ParseMode.HTML)
     storage = MemoryStorage()

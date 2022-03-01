@@ -12,7 +12,6 @@ async def cmd_start(message: types.Message, state: FSMContext):
     """Resets the current user data and sends a welcome message - serves as an entry point for the bot user."""
     await reset_user_data(message, state)
     await message.answer(
-        "<b>Welcome!</b>\n\n"
         "<b>Steganography</b> is the art and science of invisible communication. "
         "It is achieved by hiding the message information in some other carrier media.\n\n"
         "<b>Image steganography</b> is a subset of steganography where messages are hidden in image files. "
@@ -25,9 +24,15 @@ async def cmd_start(message: types.Message, state: FSMContext):
         "This bot provides <b>image steganography tools to hide secret text messages</b>, "
         "both for encryption and decryption. "
         "Additionally, this implementation also enhance the security of the steganography through data encryption.\n\n"
+        "The <b>source code of the bot</b> is available to everyone to contribute to and reuse, "
+        "as defined by the open license used for the project:\n"
+        "https://github.com/tyranus-project/steganography-telegram-bot",
+        disable_web_page_preview=True
+    )
+    await message.answer(
         "Just use the <b>menu buttons</b> or <b>commands</b> and follow the instructions in the messages:\n"
         "/encrypt to start encryption process\n"
-        "/decrypt to start decryption process\n"
+        "/decrypt to start decryption process"
     )
 
 

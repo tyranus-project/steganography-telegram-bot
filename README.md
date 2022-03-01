@@ -88,7 +88,15 @@ python -m bot
 
 ## License
 
-This project is released under the MIT License. See [LICENSE](https://github.com/neuromeow/ssh-telegram-bot/blob/master/LICENSE) for the full licensing condition.
+This project is released under the MIT License. 
+See [LICENSE](https://github.com/neuromeow/ssh-telegram-bot/blob/master/LICENSE) for the full licensing condition.
+
+## Limitations
+
+- The project uses simple in-memory based states storage, so you will lose all state after any restart.
+
+- As long as the files received from the user are stored in the directory, the path to which is defined in `DATA_DIR`, 
+and the bot is working in normal mode, they can be accessed by means of the operating system. 
 
 ## Acknowledgments
 
